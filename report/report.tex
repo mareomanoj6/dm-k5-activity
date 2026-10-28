@@ -18,13 +18,11 @@
 \setstretch{1.15}
 
 % ---------- Your details (edit these) ----------
-\newcommand{\StudentName}{Your Full Name}
-\newcommand{\StudentID}{Your Register / Roll Number}
-\newcommand{\Course}{Course Name and Code}
-\newcommand{\Institution}{Name of Your Institution}
-\newcommand{\Department}{Department Name}
-\newcommand{\Instructor}{Instructor's Name}
-\newcommand{\GroupNo}{Group Number}
+\newcommand{\StudentName}{Mareo Manoj}
+\newcommand{\StudentID}{TVE24CS099}
+\newcommand{\Course}{PECST-525 - Data Mining}
+\newcommand{\Institution}{College of Engineering, Trivandrum}
+\newcommand{\Department}{Computer Science and Engineering}
 \newcommand{\LitTopic}{Network Intrusion Detection}
 
 % Marks everything you still need to fill in (shown in red)
@@ -32,6 +30,7 @@
 
 % ---------- Header / footer ----------
 \pagestyle{fancy}
+\setlength{\headheight}{14.5pt}
 \fancyhf{}
 \lhead{\small Intrusion Detection using Machine Learning}
 \rhead{\small \StudentName}
@@ -69,11 +68,13 @@
 % =====================================================
 \begin{titlepage}
   \centering
-  \vspace*{1cm}
+  \vspace*{0.5cm}
+  \includegraphics[width=2.8cm]{logo.png}\par
+  \vspace{0.4cm}
   {\Large \textbf{\Institution}\par}
-  \vspace{0.3cm}
+  \vspace{0.2cm}
   {\large \Department\par}
-  \vspace{1.5cm}
+  \vspace{1.2cm}
   \rule{\textwidth}{1.2pt}\\[0.6cm]
   {\LARGE \textbf{Network Intrusion Detection using\\Machine Learning Classification}\par}
   \vspace{0.4cm}
@@ -88,14 +89,11 @@
   \begin{tabular}{ll}
     \textbf{Submitted by} & \StudentName \\[0.3cm]
     \textbf{Register No.} & \StudentID \\[0.3cm]
-    \textbf{Group No.}    & \GroupNo \\[0.3cm]
     \textbf{Literature Review Topic} & \LitTopic \\[0.3cm]
-    \textbf{Submitted to} & \Instructor \\[0.3cm]
     \textbf{Date}         & \today
   \end{tabular}
 
   \vfill
-  {\small Platform: Google Colab \quad|\quad Language: Python 3 \quad|\quad Library: scikit-learn\par}
 \end{titlepage}
 
 \tableofcontents
@@ -148,7 +146,9 @@ converted to \textbf{binary classification}:
 \end{center}
 
 \subsection{Dataset size after preprocessing}
-\todo{Fill in from your output: total rows before removing duplicates, rows after, number of normal vs.\ attack records, and the training/testing sizes.}
+The original 10\% KDD Cup 1999 subset contained 494{,}021 raw records with 41 features (3 categorical and 38 numerical) and 23 distinct attack types alongside normal network traffic. Prior to deduplication, the target distribution comprised 396{,}743 attack instances (80.31\%) and 97{,}278 normal instances (19.69\%).
+
+A critical vulnerability of the raw KDD99 benchmark is record duplication, which artificially inflates evaluation metrics if identical instances span both the training and testing partitions. A total of 348{,}435 duplicate records were identified and dropped, resulting in a refined dataset of 145{,}586 unique connections. In the deduplicated dataset, the distribution shifted to 87{,}832 normal connections (60.33\%) and 57{,}754 attack connections (39.67\%). Following an 80/20 stratified split, the training set contains 116{,}468 samples, and the test set contains 29{,}118 samples, preserving identical class ratios across partitions.
 
 % =====================================================
 %                    3. METHODOLOGY
@@ -162,7 +162,7 @@ converted to \textbf{binary classification}:
   \item \textbf{Duplicate removal:} KDD Cup 99 contains many duplicate records.
         If duplicates appear in both the training and testing sets, the model is
         tested on records it has already seen, which inflates the scores. Duplicates were therefore removed.
-  \item \textbf{Missing values:} checked and removed if present. \todo{State how many were found.}
+  \item \textbf{Missing values:} checked for null attributes; 0 missing values were found.
   \item \textbf{Encoding:} categorical features were one-hot encoded.
   \item \textbf{Scaling:} numeric features were standardised using \texttt{StandardScaler}.
   \item \textbf{Train/test split:} 80\% training and 20\% testing, using stratified
@@ -329,24 +329,18 @@ for name, cm in conf_matrices.items():
 \section{Output}
 
 \subsection{Dataset loading and preprocessing}
-\todo{Insert a screenshot of the Colab output for steps 2--4, e.g.\ \texttt{Raw shape}, target distribution, duplicates removed, train/test shapes. Save it as \texttt{output\_preprocessing.png} in the same folder as this file.}
-
-\IfFileExists{output_preprocessing.png}{%
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\textwidth]{output_preprocessing.png}
-  \caption{Colab output for data loading and preprocessing.}
-\end{figure}}{}
+  \caption{Execution console output for dataset loading, deduplication, and stratified train/test split.}
+\end{figure}
 
 \subsection{Evaluation output}
-\todo{Insert a screenshot of the comparison table and confusion-matrix breakdown printed in Colab. Save it as \texttt{output\_evaluation.png}.}
-
-\IfFileExists{output_evaluation.png}{%
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.9\textwidth]{output_evaluation.png}
-  \caption{Colab output for model evaluation.}
-\end{figure}}{}
+  \caption{Execution console output for model comparison metrics and confusion matrix breakdown.}
+\end{figure}
 
 % =====================================================
 %                    6. RESULTS
@@ -365,8 +359,8 @@ test set.
     \toprule
     \textbf{Algorithm} & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-score} & \textbf{Train time (s)} \\
     \midrule
-    Logistic Regression & \todo{0.0000} & \todo{0.0000} & \todo{0.0000} & \todo{0.0000} & \todo{0.00} \\
-    Random Forest       & \todo{0.0000} & \todo{0.0000} & \todo{0.0000} & \todo{0.0000} & \todo{0.00} \\
+    Logistic Regression & 0.9933 & 0.9936 & 0.9896 & 0.9916 & 6.46 \\
+    Random Forest       & 0.9994 & 0.9997 & 0.9987 & 0.9992 & 4.42 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -374,14 +368,12 @@ test set.
 \subsection{Confusion matrices}
 Figure~\ref{fig:cm} shows the confusion matrix of each algorithm.
 
-\IfFileExists{confusion_matrices.png}{%
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{confusion_matrices.png}
   \caption{Confusion matrices for Logistic Regression (left) and Random Forest (right).}
   \label{fig:cm}
-\end{figure}}{%
-\todo{Upload \texttt{confusion\_matrices.png} (saved by the Colab code) next to this \texttt{.tex} file to display the figure here.}}
+\end{figure}
 
 Table~\ref{tab:cm} breaks the matrices down into correct and incorrect predictions.
 
@@ -393,8 +385,8 @@ Table~\ref{tab:cm} breaks the matrices down into correct and incorrect predictio
     \toprule
     \textbf{Algorithm} & \textbf{TN} & \textbf{TP} & \textbf{FP} & \textbf{FN} & \textbf{Correct} & \textbf{Incorrect} \\
     \midrule
-    Logistic Regression & \todo{0} & \todo{0} & \todo{0} & \todo{0} & \todo{0} & \todo{0} \\
-    Random Forest       & \todo{0} & \todo{0} & \todo{0} & \todo{0} & \todo{0} & \todo{0} \\
+    Logistic Regression & 17{,}493 & 11{,}431 & 74 & 120 & 28{,}924 & 194 \\
+    Random Forest       & 17{,}564 & 11{,}536 & 3 & 15 & 29{,}100 & 18 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -408,25 +400,24 @@ FN = attacks missed by the model.
 %                    7. ANALYSIS
 % =====================================================
 \section{Analysis of Results}
-\todo{Write 2--3 paragraphs based on YOUR actual numbers. Cover the points below.}
+Looking at the test results across all 29{,}118 records, Random Forest clearly outperformed Logistic Regression. Random Forest achieved 99.94\% accuracy and an F1-score of 0.9992, compared to 99.33\% accuracy and an F1-score of 0.9916 for Logistic Regression. While both scores look high on paper, the confusion matrix shows where the two models actually differ in real life.
 
-\begin{itemize}
-  \item \textbf{Overall performance:} compare accuracy and F1-score of the two models.
-  \item \textbf{Missed attacks (false negatives):} which model missed fewer attacks, and
-        how many fewer? Explain why this matters for security.
-  \item \textbf{False alarms (false positives):} which model wrongly flagged more normal
-        traffic, and what is the practical cost of that?
-  \item \textbf{Why the difference occurs:} relate the results to the linear decision
-        boundary of Logistic Regression versus the non-linear, ensemble nature of
-        Random Forest.
-  \item \textbf{Efficiency:} compare training times and discuss the trade-off.
-\end{itemize}
+The biggest difference comes down to missed attacks (false negatives). In network security, missing an attack is far more dangerous than raising a false alarm. Logistic Regression missed 120 attacks, while Random Forest missed only 15. That is an 87.5\% drop in undetected attacks. At the same time, Random Forest raised only 3 false alarms compared to 74 from Logistic Regression, which saves security teams from wasting time investigating harmless traffic.
+
+This performance gap happens because network traffic patterns are rarely simple. Logistic Regression assumes a linear relationship and draws a single flat boundary to separate attacks from normal traffic. Real network attacks, however, involve combinations of connection flags, port numbers, and byte counts that do not follow a straight line. Because Random Forest builds an ensemble of 100 decision trees, it easily captures these non-linear rules. In addition, Random Forest trained faster (4.42 seconds versus 6.46 seconds) because its trees could be built in parallel across CPU cores, whereas Logistic Regression had to take iterative steps to converge.
 
 % =====================================================
 %                    8. CONCLUSION
 % =====================================================
 \section{Conclusion}
-\todo{Write a brief conclusion of 5--8 lines. State clearly which algorithm is more suitable for network intrusion detection and justify it using the actual metrics from Table~\ref{tab:metrics} and the confusion matrices (especially recall and the number of missed attacks). Mention any limitation, e.g.\ the age of the KDD Cup 99 dataset, binary rather than multi-class classification, and no hyperparameter tuning.}
+Random Forest is decisively the superior architecture for network intrusion detection in this empirical benchmark, outperforming Logistic Regression with an F1-score of 0.9992, a recall of 0.9987, and an 87.5\% reduction in missed intrusions (15 vs.\ 120 false negatives). Random Forest's non-linear ensemble boundaries and low false-positive rate (3 vs.\ 74) make it significantly more reliable for operational traffic monitoring. 
+
+Nonetheless, practical deployment must recognize three core architectural constraints:
+\begin{enumerate}
+  \item \textbf{Benchmark Age:} The KDD Cup 1999 dataset relies on synthetic military simulation telemetry from 1998, failing to reflect modern encrypted traffic (TLS 1.3, QUIC), advanced persistent threats (APTs), or polymorphic zero-day exploits.
+  \item \textbf{Binary Aggregation:} Collapsing 23 heterogeneous attack vectors into a binary label obscures catastrophic variances between high-volume Denial of Service attacks and subtle Remote-to-Local (R2L) privilege escalation attacks.
+  \item \textbf{Hyperparameter Optimization:} Default estimator parameters were evaluated without Bayesian hyperparameter tuning or cost-sensitive loss weighting to penalize false negatives.
+\end{enumerate}
 
 % =====================================================
 %                    REFERENCES
@@ -436,7 +427,8 @@ FN = attacks missed by the model.
   \item Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python.
         \textit{Journal of Machine Learning Research}, 12, 2825--2830.
   \item KDD Cup 1999 Data. UCI Knowledge Discovery in Databases Archive.
-  \item \todo{Add the papers from your group's literature review.}
+  \item Tavallaee, M., Bagheri, E., Lu, W., \& Ghorbani, A. A. (2009). A detailed analysis of the KDD CUP 99 data set. \textit{IEEE Symposium on Computational Intelligence for Security and Defense Applications}, 53--58.
+  \item Sommer, R., \& Paxson, V. (2010). Outside the closed world: On using machine learning for network intrusion detection. \textit{IEEE Symposium on Security and Privacy}, 305--316.
 \end{enumerate}
 
 \end{document}
